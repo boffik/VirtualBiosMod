@@ -106,16 +106,16 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	    }
     }
 
-    int offset_lock = 0xb4b;
-    int offset_video = 0xa45;
-    int offset_audio = 0x108E;
-    int offset_xtu = 0x859;
-    int offset_overclock = 0x858;
-    int offset_ratio = 0x85A;
-    int offset_ring = 0x865;
-    int offset_maxring = 0x8AC;
-    int offset_adaptive = 0x40F;
-    int offset_avx = 0x863;
+    int offset_lock = 0x17;
+    int offset_video = 0x13C;
+    int offset_audio = 0x55A;
+    int offset_xtu = 0x1B8;
+    int offset_overclock = 0x1B7;
+    int offset_ratio = 0x1B9;
+    int offset_ring = 0x1C4;
+    int offset_maxring = 0x20B;
+    int offset_adaptive = 0x423;
+    int offset_avx = 0x1C2;
 
 redraw:
     WaitForSingleEvent(ST->ConIn->WaitForKey, 10); // 10000000 = one second
