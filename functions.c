@@ -47,7 +47,7 @@ static EFI_STATUS get_bios_variables(const EFI_GUID *vendor, CHAR16 *name, CHAR8
 
 static EFI_STATUS set_bios_variables(CHAR16 *name, const EFI_GUID *vendor, UINTN size, CHAR8 *buffer) {
     EFI_STATUS status;
-    status = uefi_call_wrapper(RT->SetVariable, 5, name, vendor, 3, size, buffer);
+    status = uefi_call_wrapper(RT->SetVariable, 5, name, vendor, 7, size, buffer);
     return status;
 }
 
