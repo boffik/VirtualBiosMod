@@ -33,8 +33,8 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 
     EFI_STATUS status;
 //    EFI_GUID guid = { 0xEC87D643, 0xEBA4, 0x4BB5, { D0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
-    EFI_GUID guid = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2 72C5E28C-7783-43A1-8767-FAD73FCCAFA4
-//    EFI_GUID guid = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3 B08F97FF-E6E8-4193-A997-5E9E9B0ADB32
+//    EFI_GUID guid = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2 72C5E28C-7783-43A1-8767-FAD73FCCAFA4
+    EFI_GUID guid = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3 B08F97FF-E6E8-4193-A997-5E9E9B0ADB32
 //    EFI_GUID guid = { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
 //    CHAR16 varname = "PchSetup";
 
@@ -98,7 +98,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     Print(L"UEFI version:           %d.%02d", ST->Hdr.Revision >> 16, ST->Hdr.Revision & 0xffff);
 
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 15);
-    status = get_bios_variables( &guid, L"SaSetup", &data, &data_size, attr);
+    status = get_bios_variables( &guid, L"CpuSetup", &data, &data_size, attr);
     if (status != EFI_SUCCESS) {
 	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
         Print(L"Unsupported B.I.O.S.\n" , status);
@@ -134,7 +134,7 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
 
 //      Print(L"123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_");
-
+/*
     if ( data[offset_dvmt_prealloc_memory] == 1) {
         uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
         Print(L"DVMT Pre-Allocated:         32Mb      ");
@@ -155,7 +155,8 @@ redraw:
         Print(L"DVMT Total Memory:          MAX       ");
     }
 
-/*
+*/
+
     if ( data[offset_lock] == 0) {
 	uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 	Print(L"B.I.O.S. status:        Unlocked      ");
@@ -171,7 +172,7 @@ redraw:
 	uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
 	Print(L"Video card:             SG   -- Nvidia");
     }
-
+/*
     if ( data[offset_audio] == 0) {
 	uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
 	Print(L"HDMI Audio:             Enabled       ");
@@ -179,7 +180,36 @@ redraw:
 	uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
 	Print(L"HDMI Audio:             Disabled      ");
     }
-
+*/
+    if ( data[offset_package_c_limit] == 0) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C0/C1        ");
+        } else if ( data[offset_package_c_limit] == 1) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C2           ");
+        } else if ( data[offset_package_c_limit] == 2) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C3           ");
+        } else if ( data[offset_package_c_limit] == 3) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C6           ");
+        } else if ( data[offset_package_c_limit] == 4) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C7           ");
+        } else if ( data[offset_package_c_limit] == 5) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C7s          ");
+        } else if ( data[offset_package_c_limit] == 6) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C8           ");
+        } else if ( data[offset_package_c_limit] == 0) {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C9           ");
+        }else {
+        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+        Print(L"Package C-state Limit:  C10          ");
+    }
+	
     if ( data[offset_xtu] == 0) {
 	uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 8); // h, v ;pos
 	Print(L"Intel  XTU:             Disabled   ");
@@ -292,12 +322,13 @@ redraw:
 */
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 13);
-
+/*
     Print(L" Press B to switc DVMT prealloc Memory\n");
     Print(L" Press V to switch DVMT Total Memory\n");
-/*
+*/
     Print(L" Press B to unlock the bios\n");
-    Print(L" Press V to switch video card\n");
+//    Print(L" Press V to switch video card\n");
+    Print(L" Press V to switch Package C-state Limit\n");
     Print(L" Press H to enable/disable HDMI audio\n");
     Print(L" Press I to enable/disable Intel XTU\n");
     Print(L" Press O to enable/disable Overclocking\n");
@@ -312,7 +343,7 @@ redraw:
     Print(L" Press Z to switch Boot perf Mode\n");
     Print(L" Press Q to switch eDram Mode\n");
     Print(L" Press S to enable/disable Enhanced C-states\n");
-*/
+
     Print(L" Press ENTER to save new settings\n");
     if ( changes == 0 ) {
 	Print(L" Press any other key or wait to boot without any mods\n");
@@ -327,7 +358,8 @@ redraw:
     efi_status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, &efi_input_key);
 
     switch (efi_input_key.UnicodeChar) {
-        case 'v':
+/*
+        case 'v':		    
         changes=1;
             if ( data[offset_dvmt_prealloc_memory] == 1) {
                 data[offset_dvmt_prealloc_memory] = 0x2;
@@ -347,7 +379,8 @@ redraw:
             }
             efi_input_key = KeyReset;
             goto redraw;
-/*        case 'p':
+*/
+	case 'p':
         changes=1;
             if ( data[offset_power_msr_lock] == 0) {
                 data[offset_power_msr_lock] = 0x1;
@@ -405,6 +438,7 @@ redraw:
             }
             efi_input_key = KeyReset;
             goto redraw;
+/*
         case 'v':
 	changes=1;
 	    if ( data[offset_video] == 0) {
@@ -414,6 +448,30 @@ redraw:
 	    }
 	    efi_input_key = KeyReset;
 	    goto redraw;
+*/
+        case 'v':
+	changes=1;
+	    if ( data[offset_package_c_limit] == 0) {
+
+	        } else if ( data[offset_package_c_limit] == 1) {
+		    data[offset_package_c_limit] == 0x2;
+	        } else if ( data[offset_package_c_limit] == 2) {
+		    data[offset_package_c_limit] == 0x3;
+	        } else if ( data[offset_package_c_limit] == 3) {
+		    data[offset_package_c_limit] == 0x4;
+	        } else if ( data[offset_package_c_limit] == 4) {
+		    data[offset_package_c_limit] == 0x5;
+	        } else if ( data[offset_package_c_limit] == 5) {
+		    data[offset_package_c_limit] == 0x6;
+	        } else if ( data[offset_package_c_limit] == 6) {
+		    data[offset_package_c_limit] == 0x7;
+	        } else if ( data[offset_package_c_limit] == 0) {
+		    data[offset_package_c_limit] == 0x8;
+	        }else {
+		    data[offset_package_c_limit] == 0x0;
+	    }
+	    efi_input_key = KeyReset;
+	    goto redraw;		    
         case 'b':
 	changes=1;
 	    if ( data[offset_lock] == 0) {
@@ -514,7 +572,7 @@ redraw:
 		uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0, NULL);
 	    }
 	    }
-	    status = set_bios_variables(L"SaSetup", &guid, data_size, data);
+	    status = set_bios_variables(L"CpuSetup", &guid, data_size, data);
 	    if (status != EFI_SUCCESS) {
 		uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
 		Print(L" ERROR saving data %r\n" , status);
