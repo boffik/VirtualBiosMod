@@ -128,6 +128,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int offset_ecstates = 0x10;
     int offset_dvmt_prealloc_memory = 0x107;
     int offset_dvmt_total_memory = 0x108;
+    int offset_package_c_limit = 0x46;
 
 redraw:
     WaitForSingleEvent(ST->ConIn->WaitForKey, 10); // 10000000 = one second
@@ -319,7 +320,7 @@ redraw:
         uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 12); // h, v ;pos
         Print(L"Enhanced C-states:      Enabled    ");
     }
-*/
+
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 13);
 /*
@@ -553,7 +554,7 @@ redraw:
 	    }
 	    efi_input_key = KeyReset;
 	    goto redraw;
-*/
+
        case 'e':
     	    Print(L" Exiting......\n");
     	    WaitForSingleEvent(ST->ConIn->WaitForKey, 10000000); // 10000000 = one second
