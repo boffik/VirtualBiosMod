@@ -126,15 +126,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	efi_guid_key.ScanCode, efi_guid_key.UnicodeChar, efi_status);
     
     switch (efi_guid_key.UnicodeChar) {
-	case '49':
+	case '1':
     	    num_input = 1;		    
-	case '50':
+	case '2':
     	    num_input = 2;    		    
-	case '51':
+	case '3':
     	    num_input = 3;
-	case '52':
+	case '4':
     	    num_input = 4;
-	case '53':
+	case '5':
     	    num_input = 5;		    
     }
 	if (num_input == 1) {
