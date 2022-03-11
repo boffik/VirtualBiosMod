@@ -123,19 +123,27 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 15);
 
-    switch (efi_guid_key.UnicodeChar) {
-	case '1':
+    	if (efi_guid_key.UnicodeChar == 1) {
 	    status = get_bios_variables( &guid_Setup, L"Setup", &data, &data_size, attr); //Setup id  1
-	case '2':
+	} else if ( efi_guid_key.UnicodeChar == 2 ) {
 	    status = get_bios_variables( &guid_SaSetup, L"SaSetup", &data, &data_size, attr); //SaSetup id 2
-	case '3':
+	} else if ( efi_guid_key.UnicodeChar == 3 ) {
  	    status = get_bios_variables( &guid_CpuSetup, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
-	case '4':
+	} else if ( efi_guid_key.UnicodeChar == 4 ) {
 	    status = get_bios_variables( &guid_SystemConfig, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
-	case '5':
+	} else if ( efi_guid_key.UnicodeChar == 5 ) {
    	    status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
+	} else {
+	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
+        Print(L"Wrong key entered/\n" , status);
+	WaitForSingleEvent(ST->ConIn->WaitForKey, 10000000); // 10000000 = one second
+	    if ( params == 0){ 
+    		return EFI_SUCCESS;
+	    } else {
+		uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0, NULL);
+	    }
 	}
-
+	
     if (status != EFI_SUCCESS) {
 	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
         Print(L"Unsupported B.I.O.S.\n" , status);
@@ -151,8 +159,7 @@ redraw:
     WaitForSingleEvent(ST->ConIn->WaitForKey, 10); // 10000000 = one second
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
 
-    switch (efi_guid_key.UnicodeChar) {
-	case '1':
+    	if (efi_guid_key.UnicodeChar == 1) {
     	    if ( data[offset_adaptive] == 0) {
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 		Print(L"Adaptive performance:   Disabled   ");
@@ -160,8 +167,7 @@ redraw:
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 		Print(L"Adaptive performance:   Enabled    ");
     	    }
-
-	case '2':
+	} else if ( efi_guid_key.UnicodeChar == 2 ) {
     	    if ( data[offset_video] == 0) {
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
 		Print(L"Video card:             IGFX -- Intel ");
@@ -200,8 +206,7 @@ redraw:
         		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
         		Print(L"eDram Mode:           eDRAM HW Mode");
     	    }
-
-	case '3':
+	} else if ( efi_guid_key.UnicodeChar == 3 ) {
     	    if ( data[offset_cfg_lock] == 0) {
         		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
         		Print(L"CFG Lock:               Disabled   ");
@@ -321,10 +326,9 @@ redraw:
         		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 10); // h, v ;pos
         		Print(L"Power Limit MSR Lock:   Enabled    ");
     	    }
-
-	case '4':
+	} else if ( efi_guid_key.UnicodeChar == 4 ) {
 	    //SystemConfig id 4
-	case '5':
+	} else if ( efi_guid_key.UnicodeChar == 5 ) {
     	    if ( data[offset_lock] == 0) {
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 		Print(L"B.I.O.S. status:        Unlocked      ");
@@ -348,15 +352,14 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 13);
 
-    switch (efi_guid_key.UnicodeChar) {
-	case '1':
+	if ( efi_guid_key.UnicodeChar == 1 ) {
 	    Print(L" Press A to enable/disable adaptive ratio\n");
-	case '2':
+	} else if ( efi_guid_key.UnicodeChar == 2 ) {
     	    Print(L" Press V to switch video card\n");
     	    Print(L" Press D to switch eDram Mode\n");
     	    Print(L" Press P to switc DVMT prealloc Memory\n");
     	    Print(L" Press T to switch DVMT Total Memory\n");
-	case '3':
+	} else if ( efi_guid_key.UnicodeChar == 3 ) {
 	    Print(L" Press V to switch Package C-state Limit\n");
 	    Print(L" Press I to enable/disable Intel XTU\n");
 	    Print(L" Press O to enable/disable Overclocking\n");
@@ -369,9 +372,9 @@ redraw:
 	    Print(L" Press T to enable/disable TDC Lock\n");
 	    Print(L" Press Z to switch Boot perf Mode\n");   
 	    Print(L" Press S to enable/disable Enhanced C-states\n");
-	case '4':
+	} else if ( efi_guid_key.UnicodeChar == 4 ) {
 
-	case '5':
+	} else if ( efi_guid_key.UnicodeChar == 5 ) {
 	    Print(L" Press H to enable/disable HDMI audio\n");
 	    Print(L" Press B to unlock the bios\n");
     }
@@ -389,8 +392,7 @@ redraw:
 
     efi_status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, &efi_input_key);
 
-    switch (efi_guid_key.UnicodeChar) {
-	case '1':
+    	if ( efi_guid_key.UnicodeChar == 1 ) {
 	    switch (efi_input_key.UnicodeChar) {
 		case 'a': ;
 		    changes=1;
@@ -402,7 +404,7 @@ redraw:
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
 	    }
-	case '2':
+	} else if ( efi_guid_key.UnicodeChar == 2 ) {
 	    switch (efi_input_key.UnicodeChar) {
  	        case 'p':		    
         	    changes=1;
@@ -445,7 +447,7 @@ redraw:
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
 	    }
-	case '3':
+	} else if ( efi_guid_key.UnicodeChar == 3 ) {
 	    switch (efi_input_key.UnicodeChar) {
 		case 'p':
         	    changes=1;
@@ -572,11 +574,11 @@ redraw:
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
 	    }
-	case '4':
+	} else if ( efi_guid_key.UnicodeChar == 4 ) {
 	    switch (efi_input_key.UnicodeChar) {
 
 	    }
-	case '5':
+	} else if ( efi_guid_key.UnicodeChar == 5 ) {
 	    switch (efi_input_key.UnicodeChar) {
 	        case 'b':
 	  	    changes=1;
@@ -619,16 +621,15 @@ redraw:
 	    }
 	    }
 
-    	    switch (efi_guid_key.UnicodeChar) {
-		case '1':
+    	    	if ( efi_guid_key.UnicodeChar == 1 ) {
 	    	    status = set_bios_variables( L"Setup", &guid_Setup, data_size, data); //Setup id  1
-		case '2':
+		} else if ( efi_guid_key.UnicodeChar == 2 ) {
 	    	    status = set_bios_variables( L"SaSetup", &guid_SaSetup, data_size, data); //SaSetup id 2
-		case '3':
+		} else if ( efi_guid_key.UnicodeChar == 3 ) {
  	    	    status = set_bios_variables( L"CpuSetup", &guid_CpuSetup, data_size, data); //CpuSetup id 3
-		case '4':
+		} else if ( efi_guid_key.UnicodeChar == 4 ) {
 	    	    status = set_bios_variables( L"SystemConfig", &guid_SystemConfig, data_size, data); //SystemConfig id 4
-		case '5':
+		} else if ( efi_guid_key.UnicodeChar == 5 ) {
    	      	    status = set_bios_variables( L"PchSetup", &guid_PchSetup, data_size, data); //PchSetup id 5
 	    } 
 
