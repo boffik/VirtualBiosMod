@@ -136,6 +136,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	} else {
 	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
         Print(L"Wrong key entered/\n" , status);
+	Print(efi_guid_key.UnicodeChar , status);
 	WaitForSingleEvent(ST->ConIn->WaitForKey, 10000000); // 10000000 = one second
 	    if ( params == 0){ 
     		return EFI_SUCCESS;
