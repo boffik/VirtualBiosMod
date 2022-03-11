@@ -32,6 +32,11 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int params = 0;
 
     EFI_STATUS status;
+    EFI_GUID guid_setup = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
+    EFI_GUID guid_SaSetup = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
+    EFI_GUID guid_CpuSetup = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
+    EFI_GUID guid_SystemConfig = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x55, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
+    EFI_GUID guid_PchSetup = { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
 	
     CHAR8 *data;
     UINTN data_size;
@@ -74,18 +79,6 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	        Print(L" Exiting\n\n\n");
 	        return EFI_SUCCESS;
 	    } else {
-    		switch (efi_guid_key.UnicodeChar) {
-		case '1': ;
-	    	   EFI_GUID guid = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
-		case '2': ;
-	    	   EFI_GUID guid = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
-		case '3': ;
- 	    	   EFI_GUID guid = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
-		case '4': ;
-	    	   EFI_GUID guid = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x55, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
-		case '5': ;
-   	    	   EFI_GUID guid = { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
-	        }
 	        break;
 	    }
         }
@@ -112,15 +105,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 
     switch (efi_guid_key.UnicodeChar) {
 	case '1':
-	    status = get_bios_variables( &guid, L"Setup", &data, &data_size, attr); //Setup id  1
+	    status = get_bios_variables( &guid_Setup, L"Setup", &data, &data_size, attr); //Setup id  1
 	case '2':
-	    status = get_bios_variables( &guid, L"SaSetup", &data, &data_size, attr); //SaSetup id 2
+	    status = get_bios_variables( &guid_SaSetup, L"SaSetup", &data, &data_size, attr); //SaSetup id 2
 	case '3':
- 	    status = get_bios_variables( &guid, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
+ 	    status = get_bios_variables( &guid_CpuSetup, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
 	case '4':
-	    status = get_bios_variables( &guid, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
+	    status = get_bios_variables( &guid_SystemConfig, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
 	case '5':
-   	    status = get_bios_variables( &guid, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
+   	    status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
 	}
 
     if (status != EFI_SUCCESS) {
@@ -632,15 +625,15 @@ redraw:
 
     	    switch (efi_guid_key.UnicodeChar) {
 		case '1':
-	    	    status = set_bios_variables( L"Setup", &guid, data_size, data); //Setup id  1
+	    	    status = set_bios_variables( L"Setup", &guid_Setup, data_size, data); //Setup id  1
 		case '2':
-	    	    status = set_bios_variables( L"SaSetup", &guid, data_size, data); //SaSetup id 2
+	    	    status = set_bios_variables( L"SaSetup", &guid_SaSetup, data_size, data); //SaSetup id 2
 		case '3':
- 	    	    status = set_bios_variables( L"CpuSetup", &guid, data_size, data); //CpuSetup id 3
+ 	    	    status = set_bios_variables( L"CpuSetup", &guid_CpuSetup, data_size, data); //CpuSetup id 3
 		case '4':
-	    	    status = set_bios_variables( L"SystemConfig", &guid, data_size, data); //SystemConfig id 4
+	    	    status = set_bios_variables( L"SystemConfig", &guid_SystemConfig, data_size, data); //SystemConfig id 4
 		case '5':
-   	      	    status = set_bios_variables( L"PchSetup", &guid, data_size, data); //PchSetup id 5
+   	      	    status = set_bios_variables( L"PchSetup", &guid_PchSetup, data_size, data); //PchSetup id 5
 	    } 
 
 	    if (status != EFI_SUCCESS) {
