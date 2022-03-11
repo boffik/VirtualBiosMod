@@ -181,193 +181,194 @@ redraw:
     WaitForSingleEvent(ST->ConIn->WaitForKey, 10); // 10000000 = one second
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
 
-    	if (num_input == 1) {
-    	    if ( data[offset_adaptive] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-		Print(L"Adaptive performance:   Disabled   ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-		Print(L"Adaptive performance:   Enabled    ");
-    	    }
-	} else if ( num_input == 2 ) {
-    	    if ( data[offset_video] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-		Print(L"Video card:             IGFX -- Intel ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-		Print(L"Video card:             SG   -- Nvidia");
-    	    }
+    if (num_input == 1) {
+	if ( data[offset_adaptive] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+	    Print(L"Adaptive performance:   Disabled   ");
+	} else {
+   	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+	    Print(L"Adaptive performance:   Enabled    ");
+    	}
+    } else if ( num_input == 2 ) {
+        if ( data[offset_video] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+	    Print(L"Video card:             IGFX -- Intel ");
+	} else {
+  	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+	    Print(L"Video card:             SG   -- Nvidia");
+    	}
 
-	    if ( data[offset_dvmt_prealloc_memory] == 1) {
-	        uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-	        	Print(L"DVMT Pre-Allocated:         32Mb      ");
-        	    } else if ( data[offset_dvmt_prealloc_memory] == 2) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-        		Print(L"DVMT Pre-Allocated:         64Mb      ");
-	    } else {
-        		Print(L"DVMT Pre-Allocated:         Default   ");
-    	    }
+	if ( data[offset_dvmt_prealloc_memory] == 1) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+	    Print(L"DVMT Pre-Allocated:         32Mb      ");
+        } else if ( data[offset_dvmt_prealloc_memory] == 2) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+            Print(L"DVMT Pre-Allocated:         64Mb      ");
+	} else {
+            Print(L"DVMT Pre-Allocated:         Default   ");
+    	}
 
-    	    if ( data[offset_dvmt_total_memory] == 1) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
-        		Print(L"DVMT Total Memory:          128Mb     ");
-            } else if ( data[offset_dvmt_total_memory] == 2) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
-        		Print(L"DVMT Total Memory:          256Mb     ");
-            } else {
-        		Print(L"DVMT Total Memory:          MAX       ");
-    	    }
+    	if ( data[offset_dvmt_total_memory] == 1) {
+       	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+       	    Print(L"DVMT Total Memory:          128Mb     ");
+        } else if ( data[offset_dvmt_total_memory] == 2) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+            Print(L"DVMT Total Memory:          256Mb     ");
+        } else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6);
+            Print(L"DVMT Total Memory:          MAX       ");
+    	}
 
-    	    if ( data[offset_edram_mode] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-        		Print(L"eDram Mode:       SW Mode eDRAM Off");
-        	    } else if ( data[offset_edram_mode] == 1) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-        		Print(L"eDram Mode:       SW Mode eDRAM  On");
-        	    } else  {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-        		Print(L"eDram Mode:           eDRAM HW Mode");
-    	    }
-	} else if ( num_input == 3 ) {
-    	    if ( data[offset_cfg_lock] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-        		Print(L"CFG Lock:               Disabled   ");
-            } else {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-        		Print(L"CFG Lock:               Enabled    ");
-    	    }
+    	if ( data[offset_edram_mode] == 0) {
+       	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+       	    Print(L"eDram Mode:       SW Mode eDRAM Off");
+       	} else if ( data[offset_edram_mode] == 1) {
+       	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+       	    Print(L"eDram Mode:       SW Mode eDRAM  On");
+       	} else  {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+            Print(L"eDram Mode:           eDRAM HW Mode");
+    	}
+    } else if ( num_input == 3 ) {
+        if ( data[offset_cfg_lock] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+            Print(L"CFG Lock:               Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+            Print(L"CFG Lock:               Enabled    ");
+    	}
 
-    	    if ( data[offset_boot_perf_mode] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-        		Print(L"Boot perf Mode:         Max Battery");
-        	    } else if ( data[offset_boot_perf_mode] == 1) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-        		Print(L"Boot perf Mode:       Max Non-Turbo");
-            } else  {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-        		Print(L"Boot perf Mode:          Turbo Perf");
-    	    }
+        if ( data[offset_boot_perf_mode] == 0) {
+     	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+            Print(L"Boot perf Mode:         Max Battery");
+        } else if ( data[offset_boot_perf_mode] == 1) {
+      	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+            Print(L"Boot perf Mode:       Max Non-Turbo");
+        } else  {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+       	    Print(L"Boot perf Mode:          Turbo Perf");
+    	}
 
-    	    if ( data[offset_package_c_limit] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C0/C1        ");
-            } else if ( data[offset_package_c_limit] == 1) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C2           ");
-            } else if ( data[offset_package_c_limit] == 2) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C3           ");
-            } else if ( data[offset_package_c_limit] == 3) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C6           ");
-            } else if ( data[offset_package_c_limit] == 4) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C7           ");
-            } else if ( data[offset_package_c_limit] == 5) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C7s          ");
-            } else if ( data[offset_package_c_limit] == 6) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C8           ");
-            } else if ( data[offset_package_c_limit] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C9           ");
-            } else {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
-        		Print(L"Package C-state Limit:  C10          ");
-    	    }
+        if ( data[offset_package_c_limit] == 0) {
+    	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C0/C1        ");
+        } else if ( data[offset_package_c_limit] == 1) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C2           ");
+        } else if ( data[offset_package_c_limit] == 2) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C3           ");
+        } else if ( data[offset_package_c_limit] == 3) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+       	    Print(L"Package C-state Limit:  C6           ");
+        } else if ( data[offset_package_c_limit] == 4) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C7           ");
+        } else if ( data[offset_package_c_limit] == 5) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C7s          ");
+        } else if ( data[offset_package_c_limit] == 6) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C8           ");
+        } else if ( data[offset_package_c_limit] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C9           ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"Package C-state Limit:  C10          ");
+    	}
 	
-    	    if ( data[offset_xtu] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 8); // h, v ;pos
-		Print(L"Intel  XTU:             Disabled   ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 8); // h, v ;pos
-		Print(L"Intel  XTU:             Enabled    ");
-    	    }
+    	if ( data[offset_xtu] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 8); // h, v ;pos
+	    Print(L"Intel  XTU:             Disabled   ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 8); // h, v ;pos
+	    Print(L"Intel  XTU:             Enabled    ");
+    	}
 
-    	    if ( data[offset_ecstates] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 9); // h, v ;pos
-        		Print(L"Enhanced C-states:      Disabled   ");
-            } else {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 9); // h, v ;pos
-        		Print(L"Enhanced C-states:      Enabled    ");
-    	    }
+    	if ( data[offset_ecstates] == 0) {
+     	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 9); // h, v ;pos
+            Print(L"Enhanced C-states:      Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 9); // h, v ;pos
+            Print(L"Enhanced C-states:      Enabled    ");
+    	}
 
-    	    if ( data[offset_tdc_lock] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 10); // h, v ;pos
-        		Print(L"TDC Lock:               Disabled   ");
-        	    } else {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 10); // h, v ;pos
-        		Print(L"TDC Lock:               Enabled    ");
-    	    }
+    	if ( data[offset_tdc_lock] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 10); // h, v ;pos
+            Print(L"TDC Lock:               Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 10); // h, v ;pos
+            Print(L"TDC Lock:               Enabled    ");
+    	}
 
-	    if ( data[offset_overclock] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-		Print(L"Overclock :             Disabled   ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-		Print(L"Overclock :             Enabled    ");
-     	    }
+	if ( data[offset_overclock] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+	    Print(L"Overclock :             Disabled   ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+	    Print(L"Overclock :             Enabled    ");
+     	}
 
-	    if ( data[offset_ratio] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
-		Print(L"Core RATIO:             Default    ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
-		Print(L"Core RATIO:             53         ");
-    	    }
+	if ( data[offset_ratio] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+	    Print(L"Core RATIO:             Default    ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+	    Print(L"Core RATIO:             53         ");
+    	}
 
-	    if ( data[offset_ring] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 7); // h, v ;pos
-		Print(L"Core Ring:              Default    ");
-	   } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 7); // h, v ;pos
-		Print(L"Core Ring:              53         ");
-    	   }
+	if ( data[offset_ring] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 7); // h, v ;pos
+	    Print(L"Core Ring:              Default    ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 7); // h, v ;pos
+	    Print(L"Core Ring:              53         ");
+    	}
 
-	    if ( data[offset_maxring] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 8); // h, v ;pos
-		Print(L"Max Ring:               Default    ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 8); // h, v ;pos
-		Print(L"Max Ring:               53         ");
-    	    }
+	if ( data[offset_maxring] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 8); // h, v ;pos
+	    Print(L"Max Ring:               Default    ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 8); // h, v ;pos
+	    Print(L"Max Ring:               53         ");
+    	}
 
-	    if ( data[offset_avx] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 9); // h, v ;pos
-		Print(L"Max AVX:                Default    ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 9); // h, v ;pos
-		Print(L"Max AVX:                0x1F       ");
-    	    }
+	if ( data[offset_avx] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 9); // h, v ;pos
+	    Print(L"Max AVX:                Default    ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 9); // h, v ;pos
+	    Print(L"Max AVX:                0x1F       ");
+    	}
 
-    	    if ( data[offset_power_msr_lock] == 0) {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 10); // h, v ;pos
-        		Print(L"Power Limit MSR Lock:   Disabled   ");
-            } else {
-        		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 10); // h, v ;pos
-        		Print(L"Power Limit MSR Lock:   Enabled    ");
-    	    }
-	} else if ( num_input == 4 ) {
+    	if ( data[offset_power_msr_lock] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 10); // h, v ;pos
+            Print(L"Power Limit MSR Lock:   Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 10); // h, v ;pos
+            Print(L"Power Limit MSR Lock:   Enabled    ");
+    	}
+    } else if ( num_input == 4 ) {
 	    //SystemConfig id 4
-	} else if ( num_input == 5 ) {
-    	    if ( data[offset_lock] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-		Print(L"B.I.O.S. status:        Unlocked      ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
-		Print(L"B.I.O.S. status:        Locked        ");
-    	    }
+    } else if ( num_input == 5 ) {
+        if ( data[offset_lock] == 0) {
+ 	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+	    Print(L"B.I.O.S. status:        Unlocked      ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+	    Print(L"B.I.O.S. status:        Locked        ");
+    	}
 
-    	    if ( data[offset_audio] == 0) {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-		Print(L"HDMI Audio:             Enabled       ");
-	    } else {
-		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-		Print(L"HDMI Audio:             Disabled      ");
-    	    }
+    	if ( data[offset_audio] == 0) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+	    Print(L"HDMI Audio:             Enabled       ");
+	} else {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+	    Print(L"HDMI Audio:             Disabled      ");
+    	}
 
-	}
+    }
 
 //      Print(L"123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_");
 
