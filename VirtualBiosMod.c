@@ -122,8 +122,10 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     Print(L"UEFI version:           %d.%02d", ST->Hdr.Revision >> 16, ST->Hdr.Revision & 0xffff);
 
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 15);
-
-    switch (efi_input_key.UnicodeChar) {
+    Print(L"ScanCode: %xh  UnicodeChar: %xh CallRtStatus: %x\n",
+	efi_guid_key.ScanCode, efi_guid_key.UnicodeChar, efi_status);
+    
+    switch (efi_guid_key.UnicodeChar) {
 	case '49':
     	    num_input = 1;		    
 	case '50':
