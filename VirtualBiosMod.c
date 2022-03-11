@@ -425,7 +425,7 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case ’t’:
+        		case 't':
         		    changes=1;
             	    if ( data[offset_dvmt_total_memory] == 1) {
                 		data[offset_dvmt_total_memory] = 0x2;
@@ -633,15 +633,15 @@ redraw:
 	    status = set_bios_variables(L"CpuSetup", &guid, data_size, data);
 
     	    switch (efi_guid_key.UnicodeChar) {
-		case ‘1’:
+		case '1':
 	    	    status = set_bios_variables( L"Setup", &guid, data_size, data); //Setup id  1
-		case ‘2’:
-	    	    status = set_bios_variables( L»SaSetup", &guid, data_size, data); //SaSetup id 2
-		case ‘3’:
+		case '2':
+	    	    status = set_bios_variables( L"SaSetup", &guid, data_size, data); //SaSetup id 2
+		case '3':
  	    	    status = set_bios_variables( L"CpuSetup", &guid, data_size, data); //CpuSetup id 3
-		case ‘4’:
-	    	    status = set_bios_variables( L»SystemConfig", &guid, data_size, data); //SystemConfig id 4
-		case ‘5’:
+		case '4':
+	    	    status = set_bios_variables( L"SystemConfig", &guid, data_size, data); //SystemConfig id 4
+		case '5':
    	      	    status = set_bios_variables( L"PchSetup", &guid, data_size, data); //PchSetup id 5
 	    } 
 
