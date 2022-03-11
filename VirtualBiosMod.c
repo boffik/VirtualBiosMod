@@ -84,11 +84,11 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
     	Print(L"Choose the variable store.\n");
     	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
-    	Print(L"Press 1 to choose Setup.\n");
-    	Print(L"Press 2 to choose SaSetup.\n");
-    	Print(L"Press 3 to choose CpuSetup.\n");
-    	Print(L"Press 4 to choose SystemConfig.\n");
-    	Print(L"Press 5 to choose PchSetup.\n");
+    	Print(L"Press S to choose Setup.\n");
+    	Print(L"Press A to choose SaSetup.\n");
+    	Print(L"Press Z to choose CpuSetup.\n");
+    	Print(L"Press Y to choose SystemConfig.\n");
+    	Print(L"Press Q to choose PchSetup.\n");
 
     	WaitForSingleEvent(ST->ConIn->WaitForKey, 50000000); // 10000000 = one second
 
@@ -126,15 +126,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 //	efi_guid_key.ScanCode, efi_guid_key.UnicodeChar, efi_status);
     
     switch (efi_guid_key.UnicodeChar) {
-	case '1':
+	case 's':
     	    num_input = 1;		    
-	case '2':
+	case 'a':
     	    num_input = 2;    		    
-	case '3':
+	case 'z':
     	    num_input = 3;
-	case '4':
+	case 'y':
     	    num_input = 4;
-	case '5':
+	case 'q':
     	    num_input = 5;		    
     }
 	
