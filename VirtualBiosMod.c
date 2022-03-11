@@ -32,7 +32,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int params = 0;
 
     EFI_STATUS status;
-    EFI_GUID guid_setup = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
+    EFI_GUID guid_Setup = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
     EFI_GUID guid_SaSetup = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
     EFI_GUID guid_CpuSetup = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
     EFI_GUID guid_SystemConfig = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x55, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
@@ -49,6 +49,26 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     EFI_LOADED_IMAGE *loaded_image = NULL;
     BOOLEAN exit = FALSE;
 
+    int offset_lock = 0x17;
+    int offset_audio = 0x55A;
+    int offset_power_msr_lock = 0x2B;
+    int offset_xtu = 0x1B8;
+    int offset_overclock = 0x1B7;
+    int offset_ratio = 0x1B9;
+    int offset_ring = 0x1C4;
+    int offset_maxring = 0x20B;
+    int offset_avx = 0x1C2;
+    int offset_cfg_lock = 0x3E;
+    int offset_tdc_lock = 0x183;
+    int offset_boot_perf_mode = 0xE;
+    int offset_ecstates = 0x10;
+    int offset_package_c_limit = 0x46;
+    int offset_video = 0x13C;
+    int offset_edram_mode = 0x110;
+    int offset_dvmt_prealloc_memory = 0x107;
+    int offset_dvmt_total_memory = 0x108;
+    int offset_adaptive = 0x423;
+	
     InitializeLib(image, systab);
 
     status = uefi_call_wrapper(systab->BootServices->HandleProtocol, 3, image, &LoadedImageProtocol, (void **) &loaded_image);
@@ -132,9 +152,7 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
 
     switch (efi_guid_key.UnicodeChar) {
-	case '1': ;
-	    int offset_adaptive = 0x423;
-
+	case '1':
     	    if ( data[offset_adaptive] == 0) {
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 		Print(L"Adaptive performance:   Disabled   ");
@@ -143,12 +161,7 @@ redraw:
 		Print(L"Adaptive performance:   Enabled    ");
     	    }
 
-	case '2': ;
-	    int offset_video = 0x13C;
-	    int offset_edram_mode = 0x110;
-	    int offset_dvmt_prealloc_memory = 0x107;
-    	    int offset_dvmt_total_memory = 0x108;
-
+	case '2':
     	    if ( data[offset_video] == 0) {
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
 		Print(L"Video card:             IGFX -- Intel ");
@@ -188,20 +201,7 @@ redraw:
         		Print(L"eDram Mode:           eDRAM HW Mode");
     	    }
 
-	case '3': ;
-	    int offset_power_msr_lock = 0x2B;
- 	    int offset_xtu = 0x1B8;
-	    int offset_overclock = 0x1B7;
-	    int offset_ratio = 0x1B9;
-	    int offset_ring = 0x1C4;
-	    int offset_maxring = 0x20B;
-	    int offset_avx = 0x1C2;
-	    int offset_cfg_lock = 0x3E;
-	    int offset_tdc_lock = 0x183;
-	    int offset_boot_perf_mode = 0xE;
-	    int offset_ecstates = 0x10;
-	    int offset_package_c_limit = 0x46;
-
+	case '3':
     	    if ( data[offset_cfg_lock] == 0) {
         		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
         		Print(L"CFG Lock:               Disabled   ");
@@ -324,10 +324,7 @@ redraw:
 
 	case '4':
 	    //SystemConfig id 4
-	case '5': ;
-   	    int offset_lock = 0x17;
-	    int offset_audio = 0x55A;
-
+	case '5':
     	    if ( data[offset_lock] == 0) {
 		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 		Print(L"B.I.O.S. status:        Unlocked      ");
@@ -395,7 +392,7 @@ redraw:
     switch (efi_guid_key.UnicodeChar) {
 	case '1':
 	    switch (efi_input_key.UnicodeChar) {
-		case 'a':
+		case 'a': ;
 		    changes=1;
 	    	    if ( data[offset_adaptive] == 0) {
 			data[offset_adaptive] = 0x1;
