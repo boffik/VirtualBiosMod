@@ -32,11 +32,6 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int params = 0;
 
     EFI_STATUS status;
-//    
-//     72C5E28C-7783-43A1-8767-FAD73FCCAFA4
-//     B08F97FF-E6E8-4193-A997-5E9E9B0ADB32
-//    
-
 
     CHAR8 *data;
     UINTN data_size;
@@ -62,13 +57,13 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     if ( params == 0 ){
     Print(L"\n\n\n[VirtualBiosMod v%d.%d.%d]\n ",vmajor,vminor,vpatch);
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
-    Print(L"Choose the variable store."\n);
+    Print(L"Choose the variable store.\n");
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
-    Print(L"Press 1 to choose Setup."\n);
-    Print(L"Press 2 to choose SaSetup."\n);
-    Print(L"Press 3 to choose CpuSetup."\n);
-    Print(L"Press 4 to choose SystemConfig."\n);
-    Print(L"Press 5 to choose PchSetup."\n);
+    Print(L"Press 1 to choose Setup.\n");
+    Print(L"Press 2 to choose SaSetup.\n");
+    Print(L"Press 3 to choose CpuSetup.\n");
+    Print(L"Press 4 to choose SystemConfig.\n");
+    Print(L"Press 5 to choose PchSetup.\n");
 
     WaitForSingleEvent(ST->ConIn->WaitForKey, 50000000); // 10000000 = one second
 
@@ -81,15 +76,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	    return EFI_SUCCESS;
 	} else {
     switch (efi_guid_key.UnicodeChar) {
-	case ‘1’:
-	    EFI_GUID guid = { 0xEC87D643, 0xEBA4, 0x4BB5, { D0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
-	case ‘2’:
+	case '1':
+	    EFI_GUID guid = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
+	case '2':
 	    EFI_GUID guid = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
-	case ‘3’:
+	case '3':
  	    EFI_GUID guid = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
-	case ‘4’:
+	case '4':
 	    EFI_GUID guid = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x55, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
-	case ‘5’:
+	case '5':
    	    EFI_GUID guid = { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
 	}
 	    break;
@@ -117,15 +112,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 15);
 
     switch (efi_guid_key.UnicodeChar) {
-	case ‘1’:
+	case '1':
 	    status = get_bios_variables( &guid, L"Setup", &data, &data_size, attr); //Setup id  1
-	case ‘2’:
-	    status = get_bios_variables( &guid, L»SaSetup", &data, &data_size, attr); //SaSetup id 2
-	case ‘3’:
+	case '2':
+	    status = get_bios_variables( &guid, L"SaSetup", &data, &data_size, attr); //SaSetup id 2
+	case '3':
  	    status = get_bios_variables( &guid, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
-	case ‘4’:
-	    status = get_bios_variables( &guid, L»SystemConfig", &data, &data_size, attr); //SystemConfig id 4
-	case ‘5’:
+	case '4':
+	    status = get_bios_variables( &guid, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
+	case '5':
    	    status = get_bios_variables( &guid, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
 	}
 
@@ -145,7 +140,7 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
 
     switch (efi_guid_key.UnicodeChar) {
-	case ‘1’:
+	case '1':
 	    int offset_adaptive = 0x423;
 
     	    if ( data[offset_adaptive] == 0) {
@@ -156,7 +151,7 @@ redraw:
 		Print(L"Adaptive performance:   Enabled    ");
     	    }
 
-	case ‘2’:
+	case '2':
 	    int offset_video = 0x13C;
 	    int offset_edram_mode = 0x110;
 	    int offset_dvmt_prealloc_memory = 0x107;
@@ -201,7 +196,7 @@ redraw:
         		Print(L"eDram Mode:           eDRAM HW Mode");
     	    }
 
-	case ‘3’:
+	case '3':
 	    int offset_power_msr_lock = 0x2B;
  	    int offset_xtu = 0x1B8;
 	    int offset_overclock = 0x1B7;
@@ -258,7 +253,7 @@ redraw:
             } else if ( data[offset_package_c_limit] == 0) {
         		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
         		Print(L"Package C-state Limit:  C9           ");
-            }else {
+            } else {
         		uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
         		Print(L"Package C-state Limit:  C10          ");
     	    }
@@ -335,9 +330,9 @@ redraw:
         		Print(L"Power Limit MSR Lock:   Enabled    ");
     	    }
 
-	case ‘4’:
+	case '4':
 	    //SystemConfig id 4
-	case ‘5’:
+	case '5':
    	    int offset_lock = 0x17;
 	    int offset_audio = 0x55A;
 
@@ -365,14 +360,14 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 13);
 
     switch (efi_guid_key.UnicodeChar) {
-	case ‘1’:
+	case '1':
 	    Print(L" Press A to enable/disable adaptive ratio\n");
-	case ‘2’:
+	case '2':
     	    Print(L" Press V to switch video card\n");
     	    Print(L" Press D to switch eDram Mode\n");
     	    Print(L" Press P to switc DVMT prealloc Memory\n");
     	    Print(L" Press T to switch DVMT Total Memory\n");
-	case ‘3’:
+	case '3':
 	    Print(L" Press V to switch Package C-state Limit\n");
 	    Print(L" Press I to enable/disable Intel XTU\n");
 	    Print(L" Press O to enable/disable Overclocking\n");
@@ -385,9 +380,9 @@ redraw:
 	    Print(L" Press T to enable/disable TDC Lock\n");
 	    Print(L" Press Z to switch Boot perf Mode\n");   
 	    Print(L" Press S to enable/disable Enhanced C-states\n");
-	case ‘4’:
+	case '4':
 
-	case ‘5’:
+	case '5':
 	    Print(L" Press H to enable/disable HDMI audio\n");
 	    Print(L" Press B to unlock the bios\n");
     }
@@ -406,7 +401,7 @@ redraw:
     efi_status = uefi_call_wrapper(ST->ConIn->ReadKeyStroke, 2, ST->ConIn, &efi_input_key);
 
     switch (efi_guid_key.UnicodeChar) {
-	case ‘1’:
+	case '1':
 	    switch (efi_input_key.UnicodeChar) {
 		case 'a':
 		    changes=1;
@@ -418,10 +413,10 @@ redraw:
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
 	    }
-	case ‘2’:
+	case '2':
 	    switch (efi_input_key.UnicodeChar) {
- 	        case ‘p’:		    
-        		    changes=1;
+ 	        case 'p':		    
+        	    changes=1;
             	    if ( data[offset_dvmt_prealloc_memory] == 1) {
                 		data[offset_dvmt_prealloc_memory] = 0x2;
             	    } else {
@@ -440,8 +435,8 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case ‘d’:
-        		    changes=1;
+        	case 'd':
+        	    changes=1;
             	    if ( data[offset_edram_mode] == 0) {
                 	   	data[offset_edram_mode] = 0x1;
             	    } else if (data[offset_edram_mode] == 1) {
@@ -451,20 +446,20 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case 'v':
+        	case 'v':
 		    changes=1;
-	    	    	if ( data[offset_video] == 0) {
-		    data[offset_video] = 0x4;
+      	    	    if ( data[offset_video] == 0) {
+		    	data[offset_video] = 0x4;
 	    	    } else {
 			data[offset_video] = 0x0;
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
 	    }
-	case ‘3’:
+	case '3':
 	    switch (efi_input_key.UnicodeChar) {
 		case 'p':
-        		    changes=1;
+        	    changes=1;
             	    if ( data[offset_power_msr_lock] == 0) {
                 		data[offset_power_msr_lock] = 0x1;
             	    } else {
@@ -472,8 +467,8 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case 'f':
-        		    changes=1;
+        	case 'f':
+        	    changes=1;
             	    if ( data[offset_cfg_lock] == 0) {
                 		data[offset_cfg_lock] = 0x1;
             	    } else {
@@ -481,8 +476,8 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case 's':
-        		    changes=1;
+       		case 's':
+       		    changes=1;
             	    if ( data[offset_ecstates] == 0) {
                 		data[offset_ecstates] = 0x1;
             	    } else {
@@ -490,8 +485,8 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case 't':
-        		    changes=1;
+        	case 't':
+        	    changes=1;
             	    if ( data[offset_tdc_lock] == 0) {
                 		data[offset_tdc_lock] = 0x1;
             	    } else {
@@ -499,8 +494,8 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case 'z':
-        		    changes=1;
+       		case 'z':
+        	    changes=1;
             	    if ( data[offset_boot_perf_mode] == 0) {
                 		data[offset_boot_perf_mode] = 0x1;
             	    } else if (data[offset_boot_perf_mode] == 1) {
@@ -510,7 +505,7 @@ redraw:
             	    }
             	    efi_input_key = KeyReset;
             	    goto redraw;
-        		case 'v':
+       		case 'v':
 		    changes=1;
 	    	    if ( data[offset_package_c_limit] == 0) {
 	 	        data[offset_package_c_limit] = 0x1;
@@ -533,7 +528,7 @@ redraw:
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;		    
-        		case 'i':
+       		case 'i':
 		    changes=1;
 	    	    if ( data[offset_xtu] == 0) {
 			data[offset_xtu] = 0x1;
@@ -542,7 +537,7 @@ redraw:
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
-        		case 'o':
+       		case 'o':
 		    changes=1;
 	    	    if ( data[offset_overclock] == 0) {
 			data[offset_overclock] = 0x1;
@@ -551,7 +546,7 @@ redraw:
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
-        		case 'c':
+       		case 'c':
 		    changes=1;
 	    	    if ( data[offset_ratio] == 0) {
 			data[offset_ratio] = 0x53;
@@ -560,7 +555,7 @@ redraw:
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
-        		case 'r':
+       		case 'r':
 		    changes=1;
 	    	    if ( data[offset_ring] == 0) {
 			data[offset_ring] = 0x53;
@@ -569,7 +564,7 @@ redraw:
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
-        		case 'm':
+       		case 'm':
 		    changes=1;
 	    	    if ( data[offset_maxring] == 0) {
 			data[offset_maxring] = 0x53;
@@ -588,11 +583,11 @@ redraw:
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
 	    }
-	case ‘4’:
+	case '4':
 	    switch (efi_input_key.UnicodeChar) {
 
 	    }
-	case ‘5’:
+	case '5':
 	    switch (efi_input_key.UnicodeChar) {
 	        case 'b':
 	  	    changes=1;
@@ -603,7 +598,7 @@ redraw:
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
-        		case 'h':
+        	case 'h':
 		    changes=1;
 	    	    if ( data[offset_audio] == 0) {
 			data[offset_audio] = 0x1;
