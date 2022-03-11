@@ -76,15 +76,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	        return EFI_SUCCESS;
 	    } else {
     		switch (efi_guid_key.UnicodeChar) {
-		case '1':
+		case '1': ;
 	    	    guid = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
-		case '2':
+		case '2': ;
 	    	    guid = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
-		case '3':
+		case '3': ;
  	    	    guid = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
-		case '4':
+		case '4': ;
 	    	    guid = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x55, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
-		case '5':
+		case '5': ;
    	    	    guid = { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
 	        }
 	        break;
@@ -140,7 +140,7 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLUE);
 
     switch (efi_guid_key.UnicodeChar) {
-	case '1':
+	case '1': ;
 	    int offset_adaptive = 0x423;
 
     	    if ( data[offset_adaptive] == 0) {
@@ -151,7 +151,7 @@ redraw:
 		Print(L"Adaptive performance:   Enabled    ");
     	    }
 
-	case '2':
+	case '2': ;
 	    int offset_video = 0x13C;
 	    int offset_edram_mode = 0x110;
 	    int offset_dvmt_prealloc_memory = 0x107;
@@ -196,7 +196,7 @@ redraw:
         		Print(L"eDram Mode:           eDRAM HW Mode");
     	    }
 
-	case '3':
+	case '3': ;
 	    int offset_power_msr_lock = 0x2B;
  	    int offset_xtu = 0x1B8;
 	    int offset_overclock = 0x1B7;
@@ -332,7 +332,7 @@ redraw:
 
 	case '4':
 	    //SystemConfig id 4
-	case '5':
+	case '5': ;
    	    int offset_lock = 0x17;
 	    int offset_audio = 0x55A;
 
