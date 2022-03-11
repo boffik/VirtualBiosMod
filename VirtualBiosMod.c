@@ -345,7 +345,7 @@ redraw:
 
 //      Print(L"123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_");
 
-    refi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
+    uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 13);
 
     switch (efi_guid_key.UnicodeChar) {
@@ -597,7 +597,8 @@ redraw:
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
     }
-
+		    
+    }
     switch (efi_input_key.UnicodeChar) {
        case 'e':
     	    Print(L" Exiting......\n");
