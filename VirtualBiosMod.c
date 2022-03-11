@@ -32,7 +32,6 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int params = 0;
 
     EFI_STATUS status;
-    EFI_GUID guid;
 	
     CHAR8 *data;
     UINTN data_size;
