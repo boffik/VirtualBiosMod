@@ -124,15 +124,15 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 15);
 
     switch (efi_input_key.UnicodeChar) {
-	case '1':
+	case '49':
     	    num_input = 1;		    
-	case '2':
+	case '50':
     	    num_input = 2;    		    
-	case '3':
+	case '51':
     	    num_input = 3;
-	case '4':
+	case '52':
     	    num_input = 4;
-	case '5':
+	case '53':
     	    num_input = 5;		    
     }
 	if (num_input == 1) {
