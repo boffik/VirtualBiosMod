@@ -122,8 +122,8 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     Print(L"UEFI version:           %d.%02d", ST->Hdr.Revision >> 16, ST->Hdr.Revision & 0xffff);
 
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 15);
-    Print(L"ScanCode: %xh  UnicodeChar: %xh CallRtStatus: %x\n",
-	efi_guid_key.ScanCode, efi_guid_key.UnicodeChar, efi_status);
+//    Print(L"ScanCode: %xh  UnicodeChar: %xh CallRtStatus: %x\n",
+//	efi_guid_key.ScanCode, efi_guid_key.UnicodeChar, efi_status);
     
     switch (efi_guid_key.UnicodeChar) {
 	case '1':
@@ -137,26 +137,29 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	case '5':
     	    num_input = 5;		    
     }
-	if (num_input == 1) {
-	    status = get_bios_variables( &guid_Setup, L"Setup", &data, &data_size, attr); //Setup id  1
-	} else if ( num_input == 2 ) {
-	    status = get_bios_variables( &guid_SaSetup, L"SaSetup", &data, &data_size, attr); //SaSetup id 2
-	} else if ( num_input == 3 ) {
- 	    status = get_bios_variables( &guid_CpuSetup, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
-	} else if ( num_input == 4 ) {
-	    status = get_bios_variables( &guid_SystemConfig, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
-	} else if ( num_input == 5 ) {
-   	    status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
-	} else {
-	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
+	
+    Print(L"num entered : %d/n", num_input);	
+	
+    if (num_input == 1) {
+        status = get_bios_variables( &guid_Setup, L"Setup", &data, &data_size, attr); //Setup id  1
+    } else if ( num_input == 2 ) {
+        status = get_bios_variables( &guid_SaSetup, L"SaSetup", &data, &data_size, attr); //SaSetup id 2
+    } else if ( num_input == 3 ) {
+        status = get_bios_variables( &guid_CpuSetup, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
+    } else if ( num_input == 4 ) {
+        status = get_bios_variables( &guid_SystemConfig, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
+    } else if ( num_input == 5 ) {
+        status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
+    } else {
+        uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
         Print(L"Wrong key entered/\n" , status);
-	WaitForSingleEvent(ST->ConIn->WaitForKey, 10000000); // 10000000 = one second
-	    if ( params == 0){ 
-    		return EFI_SUCCESS;
-	    } else {
-		uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0, NULL);
-	    }
-	}
+        WaitForSingleEvent(ST->ConIn->WaitForKey, 10000000); // 10000000 = one second
+        if ( params == 0){ 
+   	    return EFI_SUCCESS;
+        } else {
+	    uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0, NULL);
+        }
+    }
 	
     if (status != EFI_SUCCESS) {
 	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
@@ -364,7 +367,7 @@ redraw:
 //      Print(L"123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_");
 
     uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_WHITE|EFI_BACKGROUND_BLACK);
-    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 13);
+    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 17);
 
 	if ( num_input == 1 ) {
 	    Print(L" Press A to enable/disable adaptive ratio\n");
