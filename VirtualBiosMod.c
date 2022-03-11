@@ -126,13 +126,13 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     switch (efi_input_key.UnicodeChar) {
 	case '1':
     	    num_input = 1;		    
-	case '1':
+	case '2':
     	    num_input = 2;    		    
-	case '1':
+	case '3':
     	    num_input = 3;
-	case '1':
+	case '4':
     	    num_input = 4;
-	case '1':
+	case '5':
     	    num_input = 5;		    
     }
 	if (num_input == 1) {
