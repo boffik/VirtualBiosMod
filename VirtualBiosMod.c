@@ -127,17 +127,22 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     
     switch (efi_guid_key.UnicodeChar) {
 	case 's':
-    	    num_input = 1;		    
+    	    num_input = 1;
+	    goto next;
 	case 'a':
-    	    num_input = 2;    		    
+    	    num_input = 2;
+	    goto next;
 	case 'z':
     	    num_input = 3;
+	    goto next;
 	case 'y':
     	    num_input = 4;
+	    goto next;
 	case 'q':
-    	    num_input = 5;		    
+    	    num_input = 5;
+	    goto next;
     }
-	
+next:	
     Print(L"num entered : %d/n", num_input);	
 	
     if (num_input == 1) {
