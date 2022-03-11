@@ -618,8 +618,6 @@ redraw:
 	    }
 	    }
 
-	    status = set_bios_variables(L"CpuSetup", &guid, data_size, data);
-
     	    switch (efi_guid_key.UnicodeChar) {
 		case '1':
 	    	    status = set_bios_variables( L"Setup", &guid_Setup, data_size, data); //Setup id  1
