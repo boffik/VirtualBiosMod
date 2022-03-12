@@ -160,6 +160,7 @@ next:
         status = get_bios_variables( &guid_CpuSetup, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
     } else if ( num_input == 4 ) {
         status = get_bios_variables( &guid_SystemConfig, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
+	Print(L"%c - %c\n",guid_SystemConfig, status);
     } else if ( num_input == 5 ) {
         status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
     } else {
