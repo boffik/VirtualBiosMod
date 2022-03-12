@@ -36,7 +36,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     EFI_GUID guid_SaSetup =      { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
     EFI_GUID guid_CpuSetup =     { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
 				//   A04A27F4    DF00.   4D42.     B5.   52.   39.   51.   13    02.   11.   3D
-    EFI_GUID guid_SystemConfig = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x52, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
+    EFI_GUID guid_SystemCf =     { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x52, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } };  //SystemConfig id 4
     EFI_GUID guid_PchSetup =     { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
 	
     CHAR8 *data;
@@ -159,8 +159,7 @@ next:
     } else if ( num_input == 3 ) {
         status = get_bios_variables( &guid_CpuSetup, L"CpuSetup", &data, &data_size, attr); //CpuSetup id 3
     } else if ( num_input == 4 ) {
-        status = get_bios_variables( &guid_SystemConfig, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
-	Print(L"%c - %c\n",guid_SystemConfig, status);
+        status = get_bios_variables( &guid_SystemCf, L"SystemConfig", &data, &data_size, attr); //SystemConfig id 4
     } else if ( num_input == 5 ) {
         status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
     } else {
@@ -173,7 +172,7 @@ next:
 	    uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0, NULL);
         }
     }
-	
+    Print(L"%c - %c\n",guid_SystemCf, status);	
     if (status != EFI_SUCCESS) {
 	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
         Print(L"Unsupported B.I.O.S.\n" , status);
@@ -358,8 +357,6 @@ redraw:
             Print(L"Power Limit MSR Lock:   Enabled    ");
     	}
     } else if ( num_input == 4 ) {
-	    //SystemConfig id 4 
-	    // Always On USB
 	if ( data[offset_always_on_usb] == 0) {
             uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
             Print(L"Always On USB:          Disabled   ");
