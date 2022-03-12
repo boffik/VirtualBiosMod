@@ -772,7 +772,7 @@ redraw:
 		} else if ( num_input == 3 ) {
  	    	    status = set_bios_variables( L"CpuSetup", &guid_CpuSetup, data_size, data); //CpuSetup id 3
 		} else if ( num_input == 4 ) {
-	    	    status = set_bios_variables( L"SystemConfig", &guid_SystemConfig, data_size, data); //SystemConfig id 4
+	    	    status = set_bios_variables( L"SystemConfig", &guid_SystemCf, data_size, data); //SystemConfig id 4
 		} else if ( num_input == 5 ) {
    	      	    status = set_bios_variables( L"PchSetup", &guid_PchSetup, data_size, data); //PchSetup id 5
 	    } 
