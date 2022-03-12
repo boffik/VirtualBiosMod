@@ -35,7 +35,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     EFI_GUID guid_Setup = { 0xEC87D643, 0xEBA4, 0x4BB5, { 0xA1, 0xE5, 0x3F, 0x3E, 0x36, 0xB2, 0x0D, 0xA9 } }; //Setup id  1
     EFI_GUID guid_SaSetup = { 0x72C5E28C, 0x7783, 0x43A1, { 0x87, 0x67, 0xFA, 0xD7, 0x3F, 0xCC, 0xAF, 0xA4 } }; //SaSetup id 2
     EFI_GUID guid_CpuSetup = { 0xB08F97FF, 0xE6E8, 0x4193, { 0xA9, 0x97, 0x5E, 0x9E, 0x9B, 0x0A, 0xDB, 0x32 } }; //CpuSetup id 3
-    EFI_GUID guid_SystemConfig = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x55, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
+    EFI_GUID guid_SystemConfig = { 0xA04A27F4, 0xDF00, 0x4D42, { 0xB5, 0x52, 0x39, 0x51, 0x13, 0x02, 0x11, 0x3D } }; //SystemConfig id 4
     EFI_GUID guid_PchSetup = { 0x4570B7F1, 0xADE8, 0x4943, { 0x8D, 0xC3, 0x40, 0x64, 0x72, 0x84, 0x23, 0x84 } }; //PchSetup id 5
 	
     CHAR8 *data;
@@ -149,7 +149,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	    goto next;
     }
 next:	
-    Print(L"num entered : %d/n", num_input);	
+    Print(L"num entered : %d\n", num_input);	
 	
     if (num_input == 1) {
         status = get_bios_variables( &guid_Setup, L"Setup", &data, &data_size, attr); //Setup id  1
@@ -163,7 +163,7 @@ next:
         status = get_bios_variables( &guid_PchSetup, L"PchSetup", &data, &data_size, attr); //PchSetup id 5
     } else {
         uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
-        Print(L"Wrong key entered/\n" , status);
+        Print(L"Wrong key entered\n" , status);
         WaitForSingleEvent(ST->ConIn->WaitForKey, 10000000); // 10000000 = one second
         if ( params == 0){ 
    	    return EFI_SUCCESS;
