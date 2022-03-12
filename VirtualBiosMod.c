@@ -68,6 +68,12 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int offset_dvmt_prealloc_memory = 0x107;
     int offset_dvmt_total_memory = 0x108;
     int offset_adaptive = 0x423;
+    int offset_always_on_usb = 0xFC;
+    int offset_num_lock = 0x8;
+    int offset_acpi_s3_support = 0x85;
+    int offset_current_tpm_device = 0xE3;
+    int offset_acpi_select_version = 0x60;
+    int offset_quiet_boot = 0x6E;
 	
     InitializeLib(image, systab);
 
@@ -192,31 +198,31 @@ redraw:
     } else if ( num_input == 2 ) {
         if ( data[offset_video] == 0) {
 	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-	    Print(L"Video card:             IGFX -- Intel ");
+	    Print(L"Video card:           IGFX -- Intel");
 	} else {
   	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
-	    Print(L"Video card:             SG   -- Nvidia");
+	    Print(L"Video card:           SG  -- Nvidia");
     	}
 
 	if ( data[offset_dvmt_prealloc_memory] == 1) {
 	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-	    Print(L"DVMT Pre-Allocated:         32Mb      ");
+	    Print(L"DVMT Pre-Allocated:         32Mb   ");
         } else if ( data[offset_dvmt_prealloc_memory] == 2) {
             uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-            Print(L"DVMT Pre-Allocated:         64Mb      ");
+            Print(L"DVMT Pre-Allocated:         64Mb   ");
 	} else {
-            Print(L"DVMT Pre-Allocated:         Default   ");
+            Print(L"DVMT Pre-Allocated:         Default");
     	}
 
     	if ( data[offset_dvmt_total_memory] == 1) {
        	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
-       	    Print(L"DVMT Total Memory:          128Mb     ");
+       	    Print(L"DVMT Total Memory:          128Mb  ");
         } else if ( data[offset_dvmt_total_memory] == 2) {
             uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
-            Print(L"DVMT Total Memory:          256Mb     ");
+            Print(L"DVMT Total Memory:          256Mb  ");
         } else {
 	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6);
-            Print(L"DVMT Total Memory:          MAX       ");
+            Print(L"DVMT Total Memory:          MAX    ");
     	}
 
     	if ( data[offset_edram_mode] == 0) {
@@ -350,7 +356,61 @@ redraw:
             Print(L"Power Limit MSR Lock:   Enabled    ");
     	}
     } else if ( num_input == 4 ) {
-	    //SystemConfig id 4
+	    //SystemConfig id 4 
+	    // Always On USB
+	if ( data[offset_always_on_usb] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+            Print(L"Always On USB:          Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
+            Print(L"Always On USB:          Enabled    ");
+    	}
+	    // offset_num_lock
+	if ( data[offset_num_lock] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+            Print(L"NumLock on boot:        Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+            Print(L"NumLock on boot:        Enabled    ");
+    	}
+	// ACPI S3 Support
+	if ( data[offset_acpi_s3_support] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+            Print(L"ACPI S3 Support:        Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
+            Print(L"ACPI S3 Support:        Enabled    ");
+    	}
+	    // offset_num_lock
+	if ( data[offset_current_tpm_device] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+            Print(L"Current TPM Device:    Not Detected");
+        } else if ( data[offset_current_tpm_device] == 1) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+            Print(L"Current TPM Device:    TPM 1.2     ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 6); // h, v ;pos
+            Print(L"Current TPM Device:    TPM 2.0     ");
+    	}
+	   // ACPI Selection
+	if ( data[offset_acpi_select_version] == 3) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"ACPI Selection:         Acpi5.0    ");
+        } else if ( data[offset_acpi_select_version] == 4){
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"ACPI Selection:         Acpi6.0    ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 7); // h, v ;pos
+            Print(L"ACPI Selection:         Acpi6.1    ");
+    	}
+	    // Quiet Boot
+	if ( data[offset_quiet_boot] == 0) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 7); // h, v ;pos
+            Print(L"Quiet Boot:             Disabled   ");
+        } else {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 7); // h, v ;pos
+            Print(L"Quiet Boot:             Enabled    ");
+    	}
     } else if ( num_input == 5 ) {
         if ( data[offset_lock] == 0) {
  	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
@@ -396,7 +456,12 @@ redraw:
 	    Print(L" Press Z to switch Boot perf Mode\n");   
 	    Print(L" Press S to enable/disable Enhanced C-states\n");
 	} else if ( num_input == 4 ) {
-
+	    Print(L" Press A to enable/disable Allways On USB\n");
+	    Print(L" Press N to enable/disable NumLock on boot\n");
+	    Print(L" Press Q to enable/disable Quiet Boot Mode\n");
+	    Print(L" Press T to switch TPM Device\n");
+	    Print(L" Press S to enable/disable ACPI S3 Support\n");
+	    Print(L" Press C to switch ACPI version\n");		
 	} else if ( num_input == 5 ) {
 	    Print(L" Press H to enable/disable HDMI audio\n");
 	    Print(L" Press B to unlock the bios\n");
@@ -599,7 +664,64 @@ redraw:
 	    }
 	} else if ( num_input == 4 ) {
 	    switch (efi_input_key.UnicodeChar) {
-
+         	case 'a':
+		    changes=1;
+	    	    if ( data[offset_always_on_usb] == 0) {
+			data[offset_always_on_usb] = 0x1;
+	    	    } else {
+			data[offset_always_on_usb] = 0x0;
+	    	    }
+	    	    efi_input_key = KeyReset;
+	    	    goto redraw;
+         	case 'n':
+		    changes=1;
+	    	    if ( data[offset_num_lock] == 0) {
+			data[offset_num_lock] = 0x1;
+	    	    } else {
+			data[offset_num_lock] = 0x0;
+	    	    }
+	    	    efi_input_key = KeyReset;
+	    	    goto redraw;
+         	case 'q':
+		    changes=1;
+	    	    if ( data[offset_quiet_boot] == 0) {
+			data[offset_quiet_boot] = 0x1;
+	    	    } else {
+			data[offset_quiet_boot] = 0x0;
+	    	    }
+	    	    efi_input_key = KeyReset;
+	    	    goto redraw;
+         	case 's':
+		    changes=1;
+	    	    if ( data[offset_acpi_s3_support] == 0) {
+			data[offset_acpi_s3_support] = 0x1;
+	    	    } else {
+			data[offset_acpi_s3_support] = 0x0;
+	    	    }
+	    	    efi_input_key = KeyReset;
+	    	    goto redraw;
+        	case 't':
+        	    changes=1;
+            	    if ( data[offset_current_tpm_device] == 0) {
+                	   	data[offset_current_tpm_device] = 0x1;
+            	    } else if (data[offset_current_tpm_device] == 1) {
+                		data[offset_current_tpm_device] = 0x2;
+            	    } else {
+                		data[offset_current_tpm_device] = 0x0;
+            	    }
+            	    efi_input_key = KeyReset;
+            	    goto redraw;
+        	case 'c':
+        	    changes=1;
+            	    if ( data[offset_acpi_select_version] == 3) {
+                	   	data[offset_acpi_select_version] = 0x4;
+            	    } else if (data[offset_acpi_select_version] == 4) {
+                		data[offset_acpi_select_version] = 0x5;
+            	    } else {
+                		data[offset_acpi_select_version] = 0x3;
+            	    }
+            	    efi_input_key = KeyReset;
+            	    goto redraw;
 	    }
 	} else if ( num_input == 5 ) {
 	    switch (efi_input_key.UnicodeChar) {
