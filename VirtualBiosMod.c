@@ -93,7 +93,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     	Print(L"Press S to choose Setup.\n");
     	Print(L"Press A to choose SaSetup.\n");
     	Print(L"Press Z to choose CpuSetup.\n");
-    	Print(L"Press Y to choose SystemConfig.\n");
+    	Print(L"Press X to choose SystemConfig.\n");
     	Print(L"Press Q to choose PchSetup.\n");
 
     	WaitForSingleEvent(ST->ConIn->WaitForKey, 50000000); // 10000000 = one second
@@ -141,7 +141,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	case 'z':
     	    num_input = 3;
 	    goto next;
-	case 'y':
+	case 'x':
     	    num_input = 4;
 	    goto next;
 	case 'q':
