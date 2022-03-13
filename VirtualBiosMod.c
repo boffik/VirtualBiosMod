@@ -122,7 +122,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 
 //  Print(L"123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_");
 /////////--DRAW MAIN BLUE BOX--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    Print(L"\n             SERDELIUK - VirtualBiosMod v%d.%d.%d CMOS Setup Utility               ",vmajor,vminor,vpatch);
+    Print(L"             SERDELIUK - VirtualBiosMod v%d.%d.%d CMOS Setup Utility               ",vmajor,vminor,vpatch);
     draw_box_simple(80, 11, 0, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -156,7 +156,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 	    goto next;
     }
 next:	
-    Print(L"num entered : %d\n", num_input);	
+    //Print(L"num entered : %d\n", num_input);	
 	
     if (num_input == 1) {
         status = get_bios_variables( &guid_Setup, L"Setup", &data, &data_size, attr); //Setup id  1
@@ -178,7 +178,7 @@ next:
 	    uefi_call_wrapper(RT->ResetSystem, 4, EfiResetWarm, EFI_SUCCESS, 0, NULL);
         }
     }
-    Print(L"%c - %c\n",guid_SystemCf, status);	
+    //Print(L"%c - %c\n",guid_SystemCf, status);	
     if (status != EFI_SUCCESS) {
 	uefi_call_wrapper(ST->ConOut->SetAttribute, 2, ST->ConOut, EFI_RED|EFI_BACKGROUND_BLACK);
         Print(L"Unsupported B.I.O.S.\n" , status);
@@ -208,7 +208,7 @@ redraw:
 	    Print(L"Native ASPM:             Enabled   ");
         } else if ( data[offset_native_aspm] == 2) {
             uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
-            Print(L"Native ASPM:             Auto.     ");
+            Print(L"Native ASPM:             Auto      ");
 	} else {
             Print(L"Native ASPM:             Disabled  ");
     	}	   
