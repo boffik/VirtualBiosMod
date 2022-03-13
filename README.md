@@ -9,7 +9,7 @@
 
 This virtual mod is not permament and if your new settings goes bad you need to remove cmos battery to reset your settings to factory default.
 
-It was tested only on Asus ROG STRIX G531GT 
+It was tested only on Lenovo IdeaPad S145-15IWL 
 
 This should work with any UEFI bios regardless the operating system, if you have Clover booloader put the VirtualBioosMod.efi in drivers and reboot.<br>
 If your bootloader does not know how to load efi drivers put the VirtualBiosMod.efi on a fat32 usb stick and create in your bios a new boot entry and point to VirtualBiosMod.efi file.<br>
