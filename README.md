@@ -1,7 +1,6 @@
 # VirtualBiosMod
 
 #### Bios MOD without hardware flashing requirement
-[![download](https://img.shields.io/github/downloads/serdeliuk/VirtualBiosMod/total)](https://github.com/serdeliuk/VirtualBiosMod/releases/download/8/VirtualBiosMod.1.0.8.zip)
 
 ## This source code is licensed under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html#preamble)
 ## Please read LICENSE.txt for more details
@@ -32,7 +31,5 @@ Virtual Bios MOD boot screen
 - @Richard-W for [uefi-run](https://github.com/Richard-W/uefi-run)
 - @platomav for [BIOSUtilities](https://github.com/platomav/BIOSUtilities)
 
-I hope that will help in your future projects<br><br>
 Have fun!
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/serdeliuk) any donation is highly appreciated!
