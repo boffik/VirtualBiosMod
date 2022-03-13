@@ -28,7 +28,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int changes = 0;
     int vmajor = 1;
     int vminor = 0;
-    int vpatch = 8;
+    int vpatch = 10;
     int params = 0;
 
     EFI_STATUS status;
@@ -50,8 +50,10 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     EFI_LOADED_IMAGE *loaded_image = NULL;
     BOOLEAN exit = FALSE;
     int num_input;
+    //5
     int offset_lock = 0x17;
     int offset_audio = 0x55A;
+    //3
     int offset_power_msr_lock = 0x2B;
     int offset_xtu = 0x1B8;
     int offset_overclock = 0x1B7;
@@ -64,11 +66,16 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int offset_boot_perf_mode = 0xE;
     int offset_ecstates = 0x10;
     int offset_package_c_limit = 0x46;
+    //2
     int offset_video = 0x13C;
     int offset_edram_mode = 0x110;
     int offset_dvmt_prealloc_memory = 0x107;
     int offset_dvmt_total_memory = 0x108;
+    //1
     int offset_adaptive = 0x423;
+    int offset_native_aspm = 0x1A;
+    int 
+    //4
     int offset_always_on_usb = 0xFC;
     int offset_num_lock = 0x8;
     int offset_acpi_s3_support = 0x85;
@@ -116,7 +123,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
 
 //  Print(L"123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_");
 /////////--DRAW MAIN BLUE BOX--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    Print(L"             SERDELIUK - VirtualBiosMod v%d.%d.%d CMOS Setup Utility               ",vmajor,vminor,vpatch);
+    Print(L"\n             SERDELIUK - VirtualBiosMod v%d.%d.%d CMOS Setup Utility               ",vmajor,vminor,vpatch);
     draw_box_simple(80, 11, 0, 1);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -196,6 +203,16 @@ redraw:
    	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 5); // h, v ;pos
 	    Print(L"Adaptive performance:   Enabled    ");
     	}
+	    //offset_native_aspm
+	if ( data[offset_native_aspm] == 1) {
+	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+	    Print(L"Native ASPM:             Enabled   ");
+        } else if ( data[offset_native_aspm] == 2) {
+            uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 43, 5); // h, v ;pos
+            Print(L"Native ASPM:             Auto.     ");
+	} else {
+            Print(L"Native ASPM:             Disabled  ");
+    	}	   
     } else if ( num_input == 2 ) {
         if ( data[offset_video] == 0) {
 	    uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 3, 6); // h, v ;pos
@@ -435,7 +452,8 @@ redraw:
     uefi_call_wrapper(ST->ConOut->SetCursorPosition, 3, ST->ConOut, 0, 17);
 
 	if ( num_input == 1 ) {
-	    Print(L" Press A to enable/disable adaptive ratio\n");
+	    Print(L" Press A to enable/disable Adaptive ratio\n");
+	    Print(L" Press N to enable/disable Native ASPM\n");
 	} else if ( num_input == 2 ) {
     	    Print(L" Press V to switch video card\n");
     	    Print(L" Press D to switch eDram Mode\n");
@@ -487,6 +505,17 @@ redraw:
 			data[offset_adaptive] = 0x1;
 	    	    } else {
 			data[offset_adaptive] = 0x0;
+	    	    }
+	    	    efi_input_key = KeyReset;
+	    	    goto redraw;
+		case 'n': ;
+		    changes=1;
+	    	    if ( data[offset_native_aspm] == 0) {
+			data[offset_native_aspm] = 0x1;
+	    	    } else ( data[offset_native_aspm] == 1) {
+			data[offset_native_aspm] = 0x2;
+	    	    } else {
+			data[offset_native_aspm] = 0x0;
 	    	    }
 	    	    efi_input_key = KeyReset;
 	    	    goto redraw;
