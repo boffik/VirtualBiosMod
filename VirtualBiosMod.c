@@ -73,8 +73,7 @@ EFI_STATUS efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *systab)
     int offset_dvmt_total_memory = 0x108;
     //1
     int offset_adaptive = 0x423;
-    int offset_native_aspm = 0x1A;
-    int 
+    int offset_native_aspm = 0x1A; 
     //4
     int offset_always_on_usb = 0xFC;
     int offset_num_lock = 0x8;
@@ -512,7 +511,7 @@ redraw:
 		    changes=1;
 	    	    if ( data[offset_native_aspm] == 0) {
 			data[offset_native_aspm] = 0x1;
-	    	    } else ( data[offset_native_aspm] == 1) {
+	    	    } else if ( data[offset_native_aspm] == 1) {
 			data[offset_native_aspm] = 0x2;
 	    	    } else {
 			data[offset_native_aspm] = 0x0;
